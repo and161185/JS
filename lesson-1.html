@@ -1,0 +1,39 @@
+<h1>1.<h1>
+<input id="Celsius" type="text" name="quantity" placeholder="Значение &#176С">
+<input id="convert" type="button" value="Перевести в F"/><br><br>
+<div id="Fahrenheit"></div>
+<script>
+convert.onclick = function() {
+    var val = document.getElementById('Celsius').value;
+	var F = (9 / 5) * val + 32;
+    document.getElementById('Fahrenheit').innerHTML="По фаренгейту: "+F;
+};
+</script>
+
+<h1>2.<h1>
+<input id="show" type="button" value="вывести имя"/><br><br>
+<div id="name"></div>
+<script>
+show.onclick = function() {
+    var admin;
+	var name = "Василий";
+	admin = name;
+    document.getElementById('name').innerHTML=admin;
+};
+</script>
+
+
+<h1>3.<h1>
+<div>вычисление 1000 + "108"</div>
+<div id="result"></div>
+<script>
+    document.getElementById('result').innerHTML=1000+"108";
+</script>
+<p>При использовании оператора '+' для строки и числа число будет преобразовано в строку.
+Думаю, лучше использовать явное приведение типов.</p>
+
+<h1>4.<h1>
+<p>Самостоятельно разобраться с атрибутами тега script (async и defer)</p>
+<p>при указании async или defer скрипт грузится асинхронно, не влияя на загрузку веб-страницы (не замедляя)<br>
+при async скрипт выполнится как только загрузится, независимо от самой страницы<br>
+при defer скрипт выполнится после загрузки страницы, причем гарантируется сохранение относительного порядка выполнения скриптов.</p>
