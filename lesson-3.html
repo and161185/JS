@@ -1,0 +1,83 @@
+<style>*{font-size:14px}</style>
+
+<h1>1.<h1>
+<input id="calc1" type="button" value="вывести простые числа от 0 до 100"/><br><br>
+<div id="result1"></div>
+<script>
+function isPrime(num){
+	for(var i=2; i<num; i++){
+		if(num%i == 0)
+			return false;
+	};
+	return true;
+}
+
+calc1.onclick = function() {
+    result = '';
+	for (var i=1; i<=100;i++){
+		if(isPrime(i))
+			result+=i + ' ';
+	};
+    document.getElementById('result1').innerHTML=result;
+};
+</script>
+
+<h1>2.<h1>
+<input id="calc2" type="button" value="Сгенерировать корзину и вывести сумму"/><br><br>
+<div id="result2"></div>
+<script>
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+function generateBasket(){
+	var result = [];
+	var cartSize =  getRandomInt(1, 5);
+	for(var i=1; i<=cartSize; i++){
+		var item = new Map();
+		item.set("price", getRandomInt(1000, 10000));
+		result.push(item);
+	};
+	return result;
+}
+function countBasketPrice(basket){
+	var basket_price = 0;
+	for (var i = 0; i < basket.length; i++) {
+	   basket_price+=basket[i].get('price');
+	};
+	return basket_price;
+}
+calc2.onclick = function() {
+    var basket = generateBasket();
+	var basket_price = countBasketPrice(basket);
+    document.getElementById('result2').innerHTML = basket_price;
+};
+</script>
+
+<h1>3.<h1>
+<input id="calc3" type="button" value="вывести числа от 0 до 9 без тела цикла"/><br><br>
+<div id="result3"></div>
+<script>
+
+function show(arg, result){
+	result[0]+=arg + ' ';
+}
+calc3.onclick = function() {
+	var result = [''];
+	for (var i=0; i<=9;show(++i, result)){ };
+    document.getElementById('result3').innerHTML=result[0];
+};
+</script>
+
+<h1>4.<h1>
+<input id="calc4" type="button" value="пирамида с console.log"/><br><br>
+<div id="result4"></div>
+<script>
+
+calc4.onclick = function() {
+	var message = '';
+	for (var i=1; i<=20;++i){
+		message+='x';
+		console.log(message);
+	};
+};
+</script>
