@@ -1,0 +1,63 @@
+<style>*{font-size:14px}</style>
+
+<h1>1.<h1>
+<input id="num1" type="text" name="quantity" placeholder="Введите число">
+<input id="calc1" type="button" value="рассчитать"/><br><br>
+<div id="result1"></div>
+<script>
+function decompose(num){
+	var result = new Object;
+	if (num > 999){
+		console.log('число ' + num + ' превышает 999');
+		return result;
+	};
+	
+	var hundreds = Math.trunc(num/100);
+	num = num%100;
+	
+	var decades = Math.trunc(num/10);
+	num = num%10;
+	
+	result['единицы'] = num;
+	result['десятки'] = decades;
+	result['сотни'] = hundreds;
+	
+	return result;
+	
+}
+calc1.onclick = function() {
+    var num = +document.getElementById('num1').value;	
+    document.getElementById('result1').innerHTML = JSON.stringify(decompose(num));
+};
+</script>
+
+<h1>2.<h1>
+<input id="calc2" type="button" value="Сгенерировать корзину и вывести сумму"/><br><br>
+<div id="result2"></div>
+<script>
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+function generateBasket(){
+	var result = [];
+	var cartSize =  getRandomInt(1, 5);
+	for(var i=1; i<=cartSize; i++){
+		var item = new Map();
+		item.set("price", getRandomInt(1000, 10000));
+		result.push(item);
+	};
+	return result;
+}
+function countBasketPrice(basket){
+	var basket_price = 0;
+	for (var i = 0; i < basket.length; i++) {
+	   basket_price+=basket[i].get('price');
+	};
+	return basket_price;
+}
+calc2.onclick = function() {
+    var basket = generateBasket();
+	var basket_price = countBasketPrice(basket);
+    document.getElementById('result2').innerHTML = basket_price;
+};
+</script>
