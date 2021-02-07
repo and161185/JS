@@ -1,0 +1,121 @@
+<style>*{font-size:14px}</style>
+
+<h1>1.<h1>
+<input id="calc1" type="button" value="Сгнерировать шахматную доску"/><br><br>
+<div id="result1"></div>
+<script>
+function createDesk(){
+	var result = '<table style="border-spacing:0;">';
+	
+	var letters = [];
+	for(var i=0; i<8; i++){
+		letters[i]=String.fromCharCode(65+i);
+	};
+	
+	for(var n=9; n>=0; n--){
+		result+='<tr style="height:30px;">';
+		
+		var value = String(n);
+		if(n==0 || n==9){
+			value = '';
+		};
+		
+		result+='<td align="center" style="width:30px;padding:0;">' + value + '</td>';
+		for(var letter in letters){
+			var valueLetter = '';
+			var style = 'width:30px;padding:0;';
+			if(n==0 || n==9){
+				valueLetter = letters[letter];
+			}
+			else{
+				if((n+ +letter)%2==1){
+					style += 'background-color:black;';
+				};
+				style += 'outline: black solid 1px;';
+			};	
+			style = 'style="' + style + '"';
+			result+='<td align="center" ' + style +'>' + valueLetter + '</td>';
+		};
+		result+='<td align="center" style="width:30px;padding:0;">' + value + '</td>';
+		
+		result+='</tr>'		
+	};
+	
+	result+='</table>';
+	
+	return result;
+}
+calc1.onclick = function() {
+	
+    document.getElementById('result1').innerHTML = createDesk();
+};
+</script>
+
+<h1>2.<h1>
+<input id="calc2" type="button" value="Сгнерировать корзину"/><br><br>
+<div id="div_basket"></div>
+<script>
+function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+function generateBasket(){
+	const result = [];
+	const cartSize =  getRandomInt(0, 5);
+	for(let i=1; i<=cartSize; i++){
+		var item = new Map();
+		item.set("name", "Товар " + String(i));
+		item.set("price", getRandomInt(1000, 10000));
+		result.push(item);
+	};
+	return result;
+}
+
+function showBasket() {
+    let basket = generateBasket();
+
+	div_basket.innerHTML = "";
+	if (basket.length == 0){
+		div_basket.innerHTML = "Корзина пуста";
+		return;
+	};
+	let table = document.createElement("table");
+	div_basket.appendChild(table);
+	
+	let tr = document.createElement("tr");
+	table.appendChild(tr);
+	
+	let td_name = document.createElement("td");
+	tr.appendChild(td_name);
+	td_name.innerHTML = "Наименование";
+
+	let td_price = document.createElement("tr");
+	tr.appendChild(td_price);
+	td_price.innerHTML = "Цена";	
+	
+	let basket_price = 0;
+	for (let i = 0; i < basket.length; i++) {
+		let price = basket[i].get("price");
+		basket_price+=price;
+		
+		let tr = document.createElement("tr");
+		table.appendChild(tr);
+		
+		let td_name = document.createElement("td");
+		tr.appendChild(td_name);
+		td_name.innerHTML = basket[i].get("name");
+
+		let td_price = document.createElement("tr");
+		tr.appendChild(td_price);
+		td_price.innerHTML = price;		
+	};
+	
+	let p = document.createElement("p");
+	p.innerHTML = "В корзине: " + basket.length + " товаров на сумму " + basket_price + " рублей";
+	div_basket.appendChild(p);
+	
+};
+calc2.onclick = function() {	
+    showBasket();
+};
+document.addEventListener("DOMContentLoaded", showBasket);
+</script>
