@@ -1,0 +1,191 @@
+<style>*{font-size:14px}</style>
+
+<div id="div_goods"></div>
+<div id="div_basket"></div>
+<div id="address" style="display:none">
+	<span>Адрес доставки:</span><br><input type="text" placeholder="Адрес доставки">
+	<input type="button" value="Назад" onclick="showBlock('div_basket'); hideBlock('address')">
+	<input type="button" value="Далее" onclick="showBlock('comment'); hideBlock('address')">	
+</div>
+<div id="comment" style="display:none">
+	<span>Сообщение:</span><br><input type="text" placeholder="Комментарий">
+	<input type="button" value="Назад" onclick="showBlock('address'); hideBlock('comment')">
+</div>
+<script>
+
+var _goods = [];
+var _basket = [];
+
+function showBlock(id){
+	let block = document.getElementById(id);
+	block.style.display = 'block';
+}
+
+function hideBlock(id){
+	let block = document.getElementById(id);
+	block.style.display = 'none';
+}
+
+function initGoods(){
+	for(let i=0; i<=3; i++){
+		let item = new Map();
+		item.set("name", "Товар " + String(i));
+		item.set("price", (i+1) * 10000);
+		item.set("img", String(i) + ".jpg");
+		_goods.push(item);
+	};
+}
+
+function showGoods(){
+	initGoods();
+	
+	div_goods.style.display = "flex";
+	div_goods.style.justifyContent = "space-around";
+	for (let i = 0; i < _goods.length; i++) {
+		let item = _goods[i];
+		
+		let div = document.createElement("div");
+		div_goods.appendChild(div);
+		
+		let img = document.createElement("img");
+		img.setAttribute("src", item.get("img"));
+		div.appendChild(img);
+		
+		let p = document.createElement("p");
+		p.innerHTML = item.get("name") + "<br>" + item.get("price") + " р.";
+		div.appendChild(p);	
+		
+		let button = document.createElement("input");
+		button.setAttribute("type", "button");
+		button.setAttribute("value", "Купить");
+		button.setAttribute("onclick", "toBasket("+String(i)+")");
+		div.appendChild(button);
+		
+	};
+}
+
+function toBasket(id){
+	for (let i = 0; i < _basket.length; i++) {
+		if(_basket[i].get("id")==id){
+			let item = _basket[i];
+			item.set("quantity", item.get("quantity")+1);
+			showBasket();
+			return;
+		}	
+	};
+	
+	let item = new Map();
+	item.set("id", id);
+	item.set("quantity",1);
+	_basket.push(item);
+	
+	showBasket();
+}
+
+function removeFromBasket(id){
+	for (let i = 0; i < _basket.length; i++) {
+		if(_basket[i].get("id")==id){
+			let item = _basket[i];
+			let quantity = item.get("quantity")-1;
+			
+			if(quantity > 0){
+				item.set("quantity", item.get("quantity")-1);
+			}
+			else{
+				_basket.splice(i,1);
+			}
+			showBasket();
+		}	
+	};
+}
+
+function showBasket() {
+   
+	div_basket.innerHTML = "";
+	if (_basket.length == 0){
+		div_basket.innerHTML = "Корзина пуста";
+		return;
+	};
+	let table = document.createElement("table");
+	div_basket.appendChild(table);
+	
+	let tr = document.createElement("tr");
+	table.appendChild(tr);
+	
+	let td_name = document.createElement("td");
+	tr.appendChild(td_name);
+	td_name.innerHTML = "Наименование";
+	
+	let td_q = document.createElement("td");
+	tr.appendChild(td_q);
+	td_q.innerHTML = "Количество";
+
+	let td_price = document.createElement("td");
+	tr.appendChild(td_price);
+	td_price.innerHTML = "Цена";
+
+	let td_sum= document.createElement("td");
+	tr.appendChild(td_sum);
+	td_sum.innerHTML = "Сумма";	
+	
+	let td_button= document.createElement("td");
+	tr.appendChild(td_button);
+	td_button.innerHTML = "";
+	
+	let basket_quantity = 0;
+	let basket_sum = 0;
+	for (let i = 0; i < _basket.length; i++) {
+		let id = _basket[i].get("id");
+		
+		let item = _goods[id];
+	
+		let price = item.get("price");
+		let quantity = _basket[i].get("quantity");
+		basket_sum += price*quantity;
+		basket_quantity += quantity;
+		
+		let tr = document.createElement("tr");
+		table.appendChild(tr);
+		
+		let td_name = document.createElement("td");
+		tr.appendChild(td_name);
+		
+		let img = document.createElement("img");
+		img.setAttribute("src", item.get("img"));
+		td_name.appendChild(img);
+		td_name.innerHTML += "<br>" + item.get("name");
+
+		let td_q = document.createElement("td");
+		tr.appendChild(td_q);
+		td_q.innerHTML = quantity;
+		
+		let td_price = document.createElement("td");
+		tr.appendChild(td_price);
+		td_price.innerHTML = price;	
+
+		let td_sum = document.createElement("td");
+		tr.appendChild(td_sum);
+		td_sum.innerHTML = price*quantity;	
+
+		let td_button = document.createElement("td");
+		tr.appendChild(td_button);
+		let button = document.createElement("input");
+		button.setAttribute("type", "button");
+		button.setAttribute("value", "удалить");
+		button.setAttribute("onclick", "removeFromBasket("+String(id)+")");
+		td_button.appendChild(button);		
+	};
+	
+	let p = document.createElement("p");
+	p.innerHTML = "В корзине: " + basket_quantity + " товаров на сумму " + basket_sum + " рублей";
+	div_basket.appendChild(p);
+	
+	let button = document.createElement("input");
+	button.setAttribute("type", "button");
+	button.setAttribute("value", "Далее");
+	button.setAttribute("onclick", "showBlock('address'); hideBlock('div_basket')");
+	div_basket.appendChild(button);
+	
+};
+document.addEventListener("DOMContentLoaded", showGoods);
+</script>
